@@ -53,4 +53,6 @@ while True:
         break
 
     else:
-        print("\nOpción no válida.")
+        print("\nOcion validaa.")
+
+    print("Cambio realizado desde mi computador")
