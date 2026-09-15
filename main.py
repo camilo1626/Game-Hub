@@ -56,3 +56,5 @@ while True:
         print("\nOcion validaa.")
 
     print("Cambio realizado desde mi computador")
+    print("\nOpción no válida.")
+    print("Modificacion realizada por Camilo")
