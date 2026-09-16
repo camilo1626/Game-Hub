@@ -14,4 +14,8 @@ class GestorVideojuegos:
             videojuego.jugar()
             print("Nombre:", videojuego.nombre)
             print("Género:", videojuego.obtener_genero())
+            print("Plataforma:",videojuego.obtener_plataforma())
+            print("año lanzamiento:",videojuego.obtener_año_lanzamiento())
+            print("precio:",videojuego.obtener_precio())
+            print("desarrollador:",videojuego.obtener_desarrollador())
             print("------------------")
