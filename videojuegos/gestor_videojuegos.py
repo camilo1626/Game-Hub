@@ -44,6 +44,14 @@ class GestorVideojuegos:
             print("No hay videojuegos registrados.")
             return
 
+        for videojuego in self.videojuegos:
+            videojuego.jugar()
+            print("Nombre:", videojuego.nombre)
+            print("Género:", videojuego.obtener_genero())
+            print("Plataforma:",videojuego.obtener_plataforma())
+            print("año lanzamiento:",videojuego.obtener_año_lanzamiento())
+            print("precio:",videojuego.obtener_precio())
+            print("desarrollador:",videojuego.obtener_desarrollador())
         print("\n--- VIDEOJUEGOS REGISTRADOS ---")
 
         for videojuego in videojuegos:
