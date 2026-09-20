@@ -6,57 +6,107 @@ from videojuegos.estrategia import JuegoEstrategia
 from videojuegos.educativo import JuegoEducativo
 from videojuegos.shooter import JuegoDisparos
 
+from basededatos.conexion import conectar
+
 
 gestor = GestorVideojuegos()
 
 
+def obtener_opciones(tabla):
+    consultas = {"generos": "SELECT id_genero, nombre FROM Generos ORDER BY id_genero",
+        "plataformas": "SELECT id_plataforma, nombre FROM Plataformas ORDER BY id_plataforma",
+        "desarrolladores": "SELECT id_desarrollador, nombre FROM Desarrolladores ORDER BY id_desarrollador",
+        "tipos": "SELECT id_tipo, nombre FROM TiposVideojuego ORDER BY id_tipo"
+    }
+
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    cursor.execute(consultas[tabla])
+    opciones = cursor.fetchall()
+
+    conexion.close()
+
+    return opciones
+
+
+def seleccionar_opcion(titulo, opciones):
+    print(f"\n--- {titulo} ---")
+
+    for posicion, opcion in enumerate(opciones, start=1):
+        print(f"{posicion}. {opcion[1]}")
+
+    while True:
+        try:
+            seleccion = int(input("Seleccione una opción: "))
+
+            if 1 <= seleccion <= len(opciones):
+                return opciones[seleccion - 1][1]
+
+            print("Opción no válida.")
+
+        except ValueError:
+            print("Digite un número.")
+
+
 def registrar_videojuego():
+
     print("\n--- REGISTRAR VIDEOJUEGO ---")
 
     nombre = input("Digite el nombre del videojuego: ")
-    genero = input("Digite el género del videojuego: ")
-    plataforma = input("ingrese la plataforma: ")
-    año_lanzamiento = input("ingrese el año lanzamiento: ")
-    precio = input("ingrese el precio: ")
-    desarrollador = input("ingrese el desarrollador: ")
 
+    genero = seleccionar_opcion(
+        "SELECCIONE EL GÉNERO",
+        obtener_opciones("generos")
+    )
 
-    print("\nSeleccione el tipo de videojuego:")
-    print("1. Aventura")
-    print("2. Competitivo")
-    print("3. Terror")
-    print("4. Estrategia")
-    print("5. Educativo")
-    print("6. Shooter")
+    plataforma = seleccionar_opcion(
+        "SELECCIONE LA PLATAFORMA",
+        obtener_opciones("plataformas")
+    )
 
+    anio_lanzamiento = int(
+        input("Ingrese el año de lanzamiento: ")
+    )
 
+    precio = float(
+        input("Ingrese el precio: ")
+    )
 
-    tipo = input("Digite una opción: ")
+    desarrollador = seleccionar_opcion(
+        "SELECCIONE EL DESARROLLADOR",
+        obtener_opciones("desarrolladores")
+    )
 
-    if tipo == "1":
-        juego = JuegoAventura(nombre, genero, plataforma, año_lanzamiento, precio, desarrollador)
+    tipos = obtener_opciones("tipos")
 
-    elif tipo == "2":
-        juego = JuegoCompetitivo(nombre, genero, plataforma, año_lanzamiento, precio, desarrollador)
+    tipo_nombre = seleccionar_opcion("SELECCIONE EL TIPO DE VIDEOJUEGO", tipos)
 
-    elif tipo == "3":
-        juego = JuegoTerror(nombre,genero, plataforma, año_lanzamiento, precio, desarrollador)
+    constructores = {
+        "JuegoAventura": JuegoAventura,
+        "JuegoCompetitivo": JuegoCompetitivo,
+        "JuegoTerror": JuegoTerror,
+        "JuegoEstrategia": JuegoEstrategia,
+        "JuegoEducativo": JuegoEducativo,
+        "JuegoDisparos": JuegoDisparos
+    }
 
-    elif tipo == "4":
-        juego = JuegoEstrategia(nombre,genero,plataforma,año_lanzamiento,precio,desarrollador)
-
-    elif tipo == "5":
-        juego = JuegoEducativo(nombre,genero,plataforma,año_lanzamiento,precio,desarrollador)
-
-    elif tipo == "6":
-        juego = JuegoDisparos(nombre,genero,plataforma,año_lanzamiento,precio,desarrollador)
-
-    else:
-        print("Opción no válida.")
+    if tipo_nombre not in constructores:
+        print("El tipo de videojuego no tiene una clase asociada.")
         return
 
+    clase_videojuego = constructores[tipo_nombre]
+
+    juego = clase_videojuego(
+        nombre,
+        genero,
+        plataforma,
+        anio_lanzamiento,
+        precio,
+        desarrollador
+    )
+
     gestor.agregar_videojuego(juego)
-    print("Videojuego registrado correctamente.")
 
 
 while True:
@@ -72,7 +122,6 @@ while True:
         registrar_videojuego()
 
     elif opcion == "2":
-        print("\n--- VIDEOJUEGOS REGISTRADOS ---")
         gestor.mostrar_videojuegos()
 
     elif opcion == "3":
@@ -80,10 +129,4 @@ while True:
         break
 
     else:
-
         print("\nOpción no válida.")
-        print("\nOcion validaa.")
-
-    print("Cambio realizado desde mi computador")
-    print("\nOpción no válida.")
-    print("Modificacion realizada por Camilo")
