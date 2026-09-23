@@ -1,23 +1,27 @@
-import pyodbc
-
+import sqlite3
 
 def conectar():
-    conexion = pyodbc.connect(
-        "DRIVER={ODBC Driver 18 for SQL Server};"
-        "SERVER=localhost;"
-        "DATABASE=GameHub;"
-        "Trusted_Connection=yes;"
-        "TrustServerCertificate=yes;"
-    )
-
+    conexion = sqlite3.connect("gamehub.db")
     return conexion
 
 
 def crear_tabla():
-    pass
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS videojuegos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            genero TEXT NOT NULL,
+            tipo TEXT NOT NULL
+        )
+    """)
+
+    conexion.commit()
+    conexion.close()
 
 
 if __name__ == "__main__":
-    conexion = conectar()
-    print("Conexión a SQL Server correcta")
-    conexion.close()
+    crear_tabla()
+    print("Base de datos y tabla creadas correctamente")
