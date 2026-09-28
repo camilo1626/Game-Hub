@@ -6,7 +6,7 @@ SELECT
     v.nombre,
     g.nombre AS genero,
     p.nombre AS plataforma,
-    v.anio_lanzamiento,
+    v.año_lanzamiento,
     v.precio,
     d.nombre AS desarrollador,
     t.nombre AS tipo,

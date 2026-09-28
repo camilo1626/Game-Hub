@@ -32,23 +32,31 @@ def probar_conexion():
 
 def consultar(sql, parametros=()):
     conexion = conectar()
-    try:
-        cursor = conexion.cursor()
-        cursor.execute(sql, parametros)
-        return [tuple(fila) for fila in cursor.fetchall()]
-    finally:
-        conexion.close()
+    cursor = conexion.cursor()
+    cursor.execute(sql, parametros)
+    filas = cursor.fetchall()
+    conexion.close()
+    return filas
 
 
 def ejecutar(sql, parametros=()):
     conexion = conectar()
-    try:
-        cursor = conexion.cursor()
-        cursor.execute(sql, parametros)
-        conexion.commit()
-    finally:
-        conexion.close()
+    cursor = conexion.cursor()
+    cursor.execute(sql, parametros)
+    conexion.commit()
+    conexion.close()
 
 
 def obtener_opciones(tabla):
-    return [fila[0] for fila in consultar(OPCIONES[tabla])]
+    nombres = []
+    for fila in consultar(OPCIONES[tabla]):
+        nombres.append(fila[0])
+    return nombres
+
+
+if __name__ == "__main__":
+    conectado, error = probar_conexion()
+    if conectado:
+        print("Conexión exitosa con SQL Server")
+    else:
+        print("Error:", error)
