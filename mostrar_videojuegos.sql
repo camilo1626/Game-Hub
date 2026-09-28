@@ -1,5 +1,6 @@
 USE GameHub;
 
+
 SELECT
     v.id_videojuego,
     v.nombre,
@@ -8,13 +9,14 @@ SELECT
     v.anio_lanzamiento,
     v.precio,
     d.nombre AS desarrollador,
-    t.nombre AS tipo
+    t.nombre AS tipo,
+    v.estado,
+    v.tipo_oferta,
+    u.nombre AS dueno,
+    CASE WHEN v.disponible = 1 THEN 'Disponible' ELSE 'Reutilizado' END AS situacion
 FROM Videojuegos v
-INNER JOIN Generos g
-    ON v.id_genero = g.id_genero
-INNER JOIN Plataformas p
-    ON v.id_plataforma = p.id_plataforma
-INNER JOIN Desarrolladores d
-    ON v.id_desarrollador = d.id_desarrollador
-INNER JOIN TiposVideojuego t
-    ON v.id_tipo = t.id_tipo;
+INNER JOIN Generos g ON v.id_genero = g.id_genero
+INNER JOIN Plataformas p ON v.id_plataforma = p.id_plataforma
+INNER JOIN Desarrolladores d ON v.id_desarrollador = d.id_desarrollador
+INNER JOIN TiposVideojuego t ON v.id_tipo = t.id_tipo
+LEFT JOIN Usuarios u ON v.id_usuario = u.id_usuario;

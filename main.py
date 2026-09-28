@@ -5,6 +5,7 @@ from videojuegos.gestor_videojuegos import GestorVideojuegos
 from videojuegos.estrategia import JuegoEstrategia
 from videojuegos.educativo import JuegoEducativo
 from videojuegos.shooter import JuegoDisparos
+from interfaz.ventana import iniciar_interfaz
 
 from basededatos.conexion import conectar
 
@@ -108,25 +109,4 @@ def registrar_videojuego():
 
     gestor.agregar_videojuego(juego)
 
-
-while True:
-
-    print("\n========== GAMEHUB ==========")
-    print("1. Registrar videojuego")
-    print("2. Mostrar videojuegos")
-    print("3. Salir")
-
-    opcion = input("Seleccione una opción: ")
-
-    if opcion == "1":
-        registrar_videojuego()
-
-    elif opcion == "2":
-        gestor.mostrar_videojuegos()
-
-    elif opcion == "3":
-        print("\nPrograma finalizado.")
-        break
-
-    else:
-        print("\nOpción no válida.")
+iniciar_interfaz()
