@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Registrar un videojuego</h1>
+<p class="subtitulo">Los datos se guardan en la base de datos GameHub de SQL Server</p>
+
+<form class="formulario" method="post">
+    <div class="completo">
+        <label for="nombre">Nombre del juego</label>
+        <input id="nombre" name="nombre" placeholder="Ej: GTA V" required>
+    </div>
+
+    <div>
+        <label for="tipo">Tipo (clase hija)</label>
+        <select id="tipo" name="tipo">
+            {% for tipo in tipos %}<option>{{ tipo }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="genero">Género</label>
+        <select id="genero" name="genero">
+            {% for genero in generos %}<option>{{ genero }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="plataforma">Plataforma</label>
+        <select id="plataforma" name="plataforma">
+            {% for plataforma in plataformas %}<option>{{ plataforma }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="desarrollador">Desarrollador</label>
+        <select id="desarrollador" name="desarrollador">
+            {% for desarrollador in desarrolladores %}<option>{{ desarrollador }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="anio">Año de lanzamiento</label>
+        <input id="anio" name="anio" type="number" placeholder="2020" required>
+    </div>
+
+    <div>
+        <label for="precio">Precio (0 si es intercambio o donación)</label>
+        <input id="precio" name="precio" type="number" placeholder="0">
+    </div>
+
+    <div>
+        <label for="estado">Estado del juego</label>
+        <select id="estado" name="estado">
+            {% for estado in estados %}<option>{{ estado }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="oferta">¿Cómo lo ofreces?</label>
+        <select id="oferta" name="oferta">
+            {% for oferta in ofertas %}<option>{{ oferta }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div class="completo">
+        <button class="boton ancho" type="submit">Registrar videojuego</button>
+    </div>
+</form>
+{% endblock %}

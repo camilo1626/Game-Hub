@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GameHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <nav class="barra">
+        <a class="logo" href="{{ url_for('inicio') }}">GAME<span>HUB</span></a>
+        <div class="enlaces">
+            <a href="{{ url_for('inicio') }}" class="{{ 'activo' if request.endpoint == 'inicio' }}">Inicio</a>
+            <a href="{{ url_for('catalogo') }}" class="{{ 'activo' if request.endpoint == 'catalogo' }}">Catálogo</a>
+            <a href="{{ url_for('registrar') }}" class="{{ 'activo' if request.endpoint == 'registrar' }}">Registrar juego</a>
+            <a href="{{ url_for('videojuegos') }}" class="{{ 'activo' if request.endpoint == 'videojuegos' }}">Registrados</a>
+
+            {% if session["nombre"] %}
+                <span class="saludo">Hola, {{ session["nombre"] }}</span>
+                <a class="boton claro chico" href="{{ url_for('cerrar_sesion') }}">Cerrar sesión</a>
+            {% else %}
+                <a href="{{ url_for('iniciar_sesion') }}" class="{{ 'activo' if request.endpoint == 'iniciar_sesion' }}">Iniciar sesión</a>
+                <a class="boton chico" href="{{ url_for('crear_cuenta') }}">Crear cuenta</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="contenido">
+        {% for tipo, texto in get_flashed_messages(with_categories=true) %}
+            <div class="mensaje {{ tipo }}">{{ texto }}</div>
+        {% endfor %}
+
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="pie">GameHub · Videojuegos con segunda vida · Fusagasugá · Programación II</footer>
+</body>
+</html>

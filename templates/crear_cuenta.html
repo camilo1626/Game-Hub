@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="caja-cuenta">
+    <h1>Crear cuenta</h1>
+    <p class="subtitulo">Únete a la comunidad gamer de Fusagasugá</p>
+
+    <form method="post">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" placeholder="Ej: Juan García" required>
+
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" placeholder="juan@gamehub.com" required>
+
+        <label for="contrasena">Contraseña (mínimo 4 caracteres)</label>
+        <input id="contrasena" name="contrasena" type="password" required>
+
+        <button class="boton ancho" type="submit">Crear cuenta</button>
+    </form>
+
+    <p class="cambiar">¿Ya tienes cuenta? <a href="{{ url_for('iniciar_sesion') }}">Iniciar sesión</a></p>
+</div>
+{% endblock %}

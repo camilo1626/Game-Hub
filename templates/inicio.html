@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block contenido %}
+<section class="portada">
+    <div>
+        <h1>Tus videojuegos merecen <span>una segunda vida</span></h1>
+        <p class="lema">GameHub es la plataforma de la comunidad gamer de Fusagasugá para vender, intercambiar o donar videojuegos físicos usados.</p>
+        <div class="botones">
+            <a class="boton" href="{{ url_for('catalogo') }}">Ver catálogo</a>
+            <a class="boton claro" href="{{ url_for('registrar') }}">Registrar un juego</a>
+        </div>
+    </div>
+    <div class="cifra">
+        <b>{{ total }}</b>
+        <small>videojuegos registrados en SQL Server</small>
+    </div>
+</section>
+
+<section class="ventajas">
+    <div class="ventaja"><span></span><b>Venta</b><small>a precio justo</small></div>
+    <div class="ventaja"><span></span><b>Intercambio</b><small>juego por juego</small></div>
+    <div class="ventaja"><span></span><b>Donación</b><small>para quien lo necesite</small></div>
+</section>
+
+{% if recientes %}
+<h2 class="seccion">Recién registrados</h2>
+<div class="grilla">
+    {% for juego in recientes %}
+        {% include "_tarjeta.html" %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

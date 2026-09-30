@@ -1,0 +1,16 @@
+<div class="tarjeta">
+    <div class="tapa {{ juego.tipo }}">
+        <b>{{ juego.nombre[:2] | upper }}</b>
+        <small>{{ juego.tipo }}</small>
+    </div>
+    <div class="datos">
+        <h3>{{ juego.nombre }}</h3>
+        <p class="gris">{{ juego.plataforma }} · {{ juego.genero }} · {{ juego.año_lanzamiento }}</p>
+        <p class="gris">Estado: {{ juego.estado }}</p>
+        {% if juego.tipo_oferta == "Venta" %}
+            <span class="etiqueta Venta">Venta ${{ juego.obtener_precio() | int }}</span>
+        {% else %}
+            <span class="etiqueta {{ juego.tipo_oferta }}">{{ juego.tipo_oferta }}</span>
+        {% endif %}
+    </div>
+</div>

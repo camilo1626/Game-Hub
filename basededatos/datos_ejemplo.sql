@@ -1,0 +1,50 @@
+USE GameHub;
+GO
+
+INSERT INTO Videojuegos (nombre, id_genero, id_plataforma, año_lanzamiento, precio, id_desarrollador, id_tipo, estado, tipo_oferta, id_usuario)
+VALUES
+('GTA V',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Acción'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'PlayStation 4'),
+ 2013, 80000,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'Rockstar Games'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoDisparos'),
+ 'Bueno', 'Venta', NULL),
+('FIFA 23',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Deportes'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'PlayStation 4'),
+ 2022, 0,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'EA Sports'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoCompetitivo'),
+ 'Nuevo', 'Intercambio', NULL),
+('Minecraft',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Aventura'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'PC'),
+ 2011, 40000,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'Mojang'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoAventura'),
+ 'Bueno', 'Venta', NULL),
+('Resident Evil 4',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Terror'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'PlayStation 5'),
+ 2023, 60000,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'Capcom'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoTerror'),
+ 'Nuevo', 'Venta', NULL),
+('Mario Kart 8',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Carreras'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'Nintendo Switch'),
+ 2017, 0,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'Nintendo'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoCompetitivo'),
+ 'Regular', 'Intercambio', NULL),
+('Brain Academy',
+ (SELECT id_genero FROM Generos WHERE nombre = 'Educativo'),
+ (SELECT id_plataforma FROM Plataformas WHERE nombre = 'Nintendo Switch'),
+ 2020, 0,
+ (SELECT id_desarrollador FROM Desarrolladores WHERE nombre = 'Nintendo'),
+ (SELECT id_tipo FROM TiposVideojuego WHERE nombre = 'JuegoEducativo'),
+ 'Bueno', 'Donación', NULL);
+GO
+
+SELECT * FROM Videojuegos;

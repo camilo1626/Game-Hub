@@ -29,7 +29,8 @@ CREATE TABLE Usuarios (
     id_usuario INT IDENTITY(1,1) PRIMARY KEY,
     nombre     NVARCHAR(100) NOT NULL,
     telefono   NVARCHAR(20),
-    correo     NVARCHAR(100)
+    correo     NVARCHAR(100),
+    contrasena NVARCHAR(50)
 );
 
 CREATE TABLE Videojuegos (
@@ -69,9 +70,9 @@ INSERT INTO Desarrolladores (nombre) VALUES
 INSERT INTO TiposVideojuego (nombre) VALUES
     ('JuegoAventura'), ('JuegoCompetitivo'), ('JuegoTerror'), ('JuegoEducativo'), ('JuegoDisparos');
 
-INSERT INTO Usuarios (nombre, telefono, correo) VALUES
-    ('Juan Garcia', '3192695345', 'juan@gamehub.com'),
-    ('Camilo Cortes', '3180895981', 'camilo@gamehub.com');
+INSERT INTO Usuarios (nombre, telefono, correo, contrasena) VALUES
+    ('Juan Garcia', '3192695345', 'juan@gamehub.com', '1234'),
+    ('Camilo Cortes', '3180895981', 'camilo@gamehub.com', '1234');
 
 INSERT INTO Videojuegos (nombre, id_genero, id_plataforma, año_lanzamiento, precio, id_desarrollador, id_tipo, estado, tipo_oferta, id_usuario) VALUES
     ('GTA V', 1, 2, 2013, 80000, 6, 1, 'Bueno', 'Venta', 1),

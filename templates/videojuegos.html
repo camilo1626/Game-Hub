@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Videojuegos registrados</h1>
+<p class="subtitulo">Consulta directa a la tabla Videojuegos de SQL Server · {{ juegos | length }} registros</p>
+
+<div class="tabla-caja">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Clase</th>
+                <th>Plataforma</th>
+                <th>Año</th>
+                <th>Estado</th>
+                <th>Oferta</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for juego in juegos %}
+            <tr>
+                <td>{{ juego.id_videojuego }}</td>
+                <td><b>{{ juego.nombre }}</b></td>
+                <td>{{ juego.tipo }}</td>
+                <td>{{ juego.plataforma }}</td>
+                <td>{{ juego.año_lanzamiento }}</td>
+                <td>{{ juego.estado }}</td>
+                <td><span class="etiqueta {{ juego.tipo_oferta }}">{{ juego.tipo_oferta }}</span></td>
+                <td>${{ juego.obtener_precio() | int }}</td>
+                <td>
+                    <div class="acciones">
+                        <form method="post" action="{{ url_for('editar_precio', id_videojuego=juego.id_videojuego) }}">
+                            <input name="precio" type="number" value="{{ juego.obtener_precio() | int }}" aria-label="Nuevo precio">
+                            <button class="boton chico" type="submit">Guardar</button>
+                        </form>
+                        <form method="post" action="{{ url_for('eliminar', id_videojuego=juego.id_videojuego) }}">
+                            <button class="boton chico rojo" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="9" class="vacio">No hay videojuegos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

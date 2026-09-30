@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Catálogo</h1>
+<p class="subtitulo">Videojuegos con segunda vida, publicados por la comunidad</p>
+
+<form class="buscador" method="get">
+    <input name="buscar" value="{{ buscar }}" placeholder="Buscar por nombre, ej: Mario">
+    <button class="boton" type="submit">Buscar</button>
+</form>
+
+<div class="grilla">
+    {% for juego in juegos %}
+        {% include "_tarjeta.html" %}
+    {% else %}
+        <p class="vacio">No se encontraron videojuegos. <a href="{{ url_for('registrar') }}">Registra uno</a>.</p>
+    {% endfor %}
+</div>
+{% endblock %}
