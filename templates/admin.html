@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Panel del administrador</h1>
+<p class="subtitulo">El administrador puede ver todo lo que pasa en GameHub</p>
+
+<section class="numeros">
+    <div class="numero"><b>{{ usuarios | length }}</b><small>usuarios</small></div>
+    <div class="numero"><b>{{ juegos | length }}</b><small>videojuegos</small></div>
+    <div class="numero"><b>{{ solicitudes | length }}</b><small>solicitudes</small></div>
+</section>
+
+<h2 class="seccion">Usuarios</h2>
+<div class="tabla-caja">
+    <table>
+        <thead><tr><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Rol</th><th>Restablecer contraseña</th></tr></thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td><b>{{ u.nombre }}</b></td>
+                <td>{{ u.correo }}</td>
+                <td>{{ u.telefono }}</td>
+                <td><span class="rol {{ u.rol }}">{{ "Administrador" if u.es_admin() else "Usuario" }}</span></td>
+                <td>
+                    {% if not u.es_admin() %}
+                    <form class="acciones" method="post" action="{{ url_for('restablecer_contrasena', id_usuario=u.id_usuario) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input name="nueva" placeholder="Nueva contraseña" required minlength="4" aria-label="Nueva contraseña">
+                        <button class="boton chico" type="submit">Restablecer</button>
+                    </form>
+                    {% else %}-{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="seccion">Videojuegos</h2>
+<div class="tabla-caja">
+    <table>
+        <thead><tr><th>Nombre</th><th>Clase</th><th>Dueño</th><th>Oferta</th><th>Precio</th><th>Situación</th><th>Acción</th></tr></thead>
+        <tbody>
+            {% for juego in juegos %}
+            <tr>
+                <td><b>{{ juego.nombre }}</b></td>
+                <td>{{ juego.tipo }}</td>
+                <td>{{ juego.dueno }}</td>
+                <td><span class="etiqueta {{ juego.tipo_oferta }}">{{ juego.tipo_oferta }}</span></td>
+                <td>$ {{ juego.obtener_precio() | pesos }}</td>
+                <td>{{ "Disponible" if juego.disponible else "Reservado" }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('eliminar_juego', id_videojuego=juego.id_videojuego) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="boton chico rojo" type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="vacio">No hay videojuegos.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="seccion">Solicitudes</h2>
+<div class="tabla-caja">
+    <table>
+        <thead><tr><th>Juego</th><th>Pedido por</th><th>Mensaje</th><th>Estado</th></tr></thead>
+        <tbody>
+            {% for s in solicitudes %}
+            <tr>
+                <td><b>{{ s.nombre_juego }}</b></td>
+                <td>{{ s.nombre_solicitante }}</td>
+                <td>{{ s.mensaje }}</td>
+                <td><span class="estado {{ s.estado }}">{{ s.estado }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="vacio">Todavía no hay solicitudes.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

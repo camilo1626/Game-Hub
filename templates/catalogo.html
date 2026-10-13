@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<!-- ===== JUEGO DESTACADO (el más reciente) ===== -->
+{% if destacado %}
+<section class="destacado">
+    <div>
+        <span class="chip-destacado">✨ Juego destacado</span>
+        <h1>{{ destacado.nombre }}</h1>
+        <p class="gris">{{ destacado.plataforma }} · {{ destacado.genero }} · Publicado por {{ destacado.dueno }}</p>
+
+        <div class="precios">
+            <div>
+                <small>{{ destacado.tipo_oferta }}</small>
+                {% if destacado.tipo_oferta == "Venta" %}
+                    <b class="verde">$ {{ destacado.obtener_precio() | pesos }}</b>
+                {% else %}
+                    <b class="verde">Gratis</b>
+                {% endif %}
+            </div>
+            <div>
+                <small>Estado</small>
+                <b>{{ destacado.estado }}</b>
+            </div>
+        </div>
+    </div>
+    {% if destacado.imagen %}
+        <img class="imagen-destacado portada" src="{{ destacado.imagen }}" alt="{{ destacado.nombre }}">
+    {% else %}
+        <img class="imagen-destacado" src="{{ url_for('static', filename='imagenes/' + destacado.tipo + '.svg') }}" alt="{{ destacado.tipo }}">
+    {% endif %}
+</section>
+{% endif %}
+
+<!-- ===== FILTROS POR PLATAFORMA Y BUSCADOR ===== -->
+<div class="barra-filtros">
+    <div class="filtros">
+        <a href="{{ url_for('catalogo') }}" class="filtro {{ 'activo' if plataforma == '' }}">Todos</a>
+        {% for p in plataformas %}
+            <a href="{{ url_for('catalogo', plataforma=p) }}" class="filtro {{ 'activo' if plataforma == p }}">{{ p }}</a>
+        {% endfor %}
+    </div>
+
+    <form class="buscador" method="get">
+        <input type="hidden" name="plataforma" value="{{ plataforma }}">
+        <input name="buscar" value="{{ buscar }}" placeholder="🔍 Buscar juego...">
+    </form>
+</div>
+
+<!-- ===== TARJETAS ===== -->
+<div class="grilla">
+    {% for juego in juegos %}
+        {% include "_tarjeta.html" %}
+    {% else %}
+        <p class="vacio">No se encontraron videojuegos.</p>
+    {% endfor %}
+</div>
+{% endblock %}

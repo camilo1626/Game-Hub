@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GameHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+<div class="pagina">
+
+    <!-- ===== MENÚ LATERAL ===== -->
+    <aside class="lateral">
+        <a class="logo" href="{{ url_for('inicio') }}">
+            <span class="logo-icono"><img src="{{ url_for('static', filename='iconos/logo.svg') }}" alt=""></span> <span>Game<span class="morado">Hub</span></span>
+        </a>
+
+        <nav class="menu">
+            <a href="{{ url_for('inicio') }}" class="{{ 'activo' if request.endpoint == 'inicio' }}"><img class="icono" src="{{ url_for('static', filename='iconos/inicio.svg') }}" alt=""> Inicio</a>
+            <a href="{{ url_for('catalogo') }}" class="{{ 'activo' if request.endpoint == 'catalogo' }}"><img class="icono" src="{{ url_for('static', filename='iconos/catalogo.svg') }}" alt=""> Catálogo</a>
+
+            {% if session["rol"] == "usuario" %}
+                <!-- Menú del USUARIO -->
+                <a href="{{ url_for('publicar') }}" class="{{ 'activo' if request.endpoint == 'publicar' }}"><img class="icono" src="{{ url_for('static', filename='iconos/publicar.svg') }}" alt=""> Publicar juego</a>
+                <a href="{{ url_for('mis_juegos') }}" class="{{ 'activo' if request.endpoint == 'mis_juegos' }}"><img class="icono" src="{{ url_for('static', filename='iconos/mis_juegos.svg') }}" alt=""> Mis juegos</a>
+                <a href="{{ url_for('solicitudes') }}" class="{{ 'activo' if request.endpoint == 'solicitudes' }}"><img class="icono" src="{{ url_for('static', filename='iconos/solicitudes.svg') }}" alt=""> Solicitudes</a>
+            {% endif %}
+
+            {% if session["rol"] %}
+                <a href="{{ url_for('notificaciones') }}" class="{{ 'activo' if request.endpoint == 'notificaciones' }}">
+                    <img class="icono" src="{{ url_for('static', filename='iconos/notificaciones.svg') }}" alt=""> Notificaciones {% if sin_leer > 0 %}<span class="contador">{{ sin_leer }}</span>{% endif %}
+                </a>
+            {% endif %}
+
+            {% if session["rol"] == "admin" %}
+                <!-- Menú del ADMINISTRADOR -->
+                <a href="{{ url_for('admin') }}" class="especial {{ 'activo' if request.endpoint == 'admin' }}"><img class="icono" src="{{ url_for('static', filename='iconos/admin.svg') }}" alt=""> Panel admin</a>
+            {% endif %}
+        </nav>
+
+        <!-- Abajo: la persona que inició sesión -->
+        <div class="persona">
+            {% if session["nombre"] %}
+                <div class="tarjeta-persona">
+                    <span class="inicial">{{ session["nombre"][0] }}</span>
+                    <div>
+                        <b>{{ session["nombre"] }}</b>
+                        <small>{{ "Administrador" if session["rol"] == "admin" else "Usuario" }}</small>
+                    </div>
+                </div>
+                <!-- Cerrar sesión es un formulario POST con csrf_token (se ve igual que antes) -->
+                <form method="post" action="{{ url_for('cerrar_sesion') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="salir" type="submit"><img class="icono" src="{{ url_for('static', filename='iconos/salir.svg') }}" alt=""> Cerrar sesión</button>
+                </form>
+            {% else %}
+                <!-- Menú del VISITANTE -->
+                <a class="boton ancho" href="{{ url_for('iniciar_sesion') }}">Iniciar sesión</a>
+                <a class="boton claro ancho" href="{{ url_for('crear_cuenta') }}">Crear cuenta</a>
+            {% endif %}
+        </div>
+    </aside>
+
+    <!-- ===== PARTE DERECHA ===== -->
+    <div class="derecha">
+        <header class="saludo-arriba">
+            {% if session["nombre"] %}
+                <h2>Hola, {{ session["nombre"] }}</h2>
+                <small>{{ "Administrador de GameHub" if session["rol"] == "admin" else "Usuario de la comunidad GameHub" }}</small>
+            {% else %}
+                <h2>Hola, bienvenido a GameHub</h2>
+                <small>Inicia sesión para publicar y pedir juegos</small>
+            {% endif %}
+        </header>
+
+        <main class="contenido">
+            {% for tipo, texto in get_flashed_messages(with_categories=true) %}
+                <div class="mensaje {{ tipo }}">{{ texto }}</div>
+            {% endfor %}
+
+            {% block contenido %}{% endblock %}
+        </main>
+
+        <footer class="pie">GameHub · Videojuegos con segunda vida · Fusagasugá · Programación II</footer>
+    </div>
+
+</div>
+</body>
+</html>

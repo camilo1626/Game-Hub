@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Solicitudes</h1>
+<p class="subtitulo">Aquí respondes a quien quiere tus juegos y ves lo que tú pediste</p>
+
+<h2 class="seccion">Me pidieron mis juegos</h2>
+<div class="tabla-caja">
+    <table>
+        <thead><tr><th>Juego</th><th>Quién lo pide</th><th>Mensaje</th><th>Estado</th><th>Responder</th></tr></thead>
+        <tbody>
+            {% for s in recibidas %}
+            <tr>
+                <td><b>{{ s.nombre_juego }}</b></td>
+                <td>{{ s.nombre_solicitante }}</td>
+                <td>{{ s.mensaje }}</td>
+                <td><span class="estado {{ s.estado }}">{{ s.estado }}</span></td>
+                <td>
+                    {% if s.estado == "Pendiente" %}
+                    <div class="acciones">
+                        <form method="post" action="{{ url_for('aceptar_solicitud', id_solicitud=s.id_solicitud) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="boton chico verde" type="submit">Aceptar</button>
+                        </form>
+                        <form method="post" action="{{ url_for('rechazar_solicitud', id_solicitud=s.id_solicitud) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="boton chico rojo" type="submit">Rechazar</button>
+                        </form>
+                    </div>
+                    {% else %}Respondida{% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="vacio">Nadie ha pedido tus juegos todavía.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="seccion">Yo pedí</h2>
+<div class="tabla-caja">
+    <table>
+        <thead><tr><th>Juego</th><th>Mi mensaje</th><th>Estado</th></tr></thead>
+        <tbody>
+            {% for s in enviadas %}
+            <tr>
+                <td><b>{{ s.nombre_juego }}</b></td>
+                <td>{{ s.mensaje }}</td>
+                <td><span class="estado {{ s.estado }}">{{ s.estado }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="vacio">No has pedido juegos. <a href="{{ url_for('catalogo') }}">Mira el catálogo</a>.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

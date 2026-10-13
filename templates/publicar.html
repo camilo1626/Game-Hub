@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Publicar un videojuego</h1>
+<p class="subtitulo">Llena los datos y tu juego aparecerá en el catálogo</p>
+
+<form class="formulario" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="completo">
+        <label for="nombre">Nombre del juego</label>
+        <input id="nombre" name="nombre" placeholder="Ej: GTA V" required>
+    </div>
+
+    <div>
+        <label for="tipo">Tipo (clase hija)</label>
+        <select id="tipo" name="tipo">
+            {% for tipo in tipos %}<option>{{ tipo }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="genero">Género</label>
+        <select id="genero" name="genero">
+            {% for genero in generos %}<option>{{ genero }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="plataforma">Plataforma</label>
+        <select id="plataforma" name="plataforma">
+            {% for plataforma in plataformas %}<option>{{ plataforma }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="desarrollador">Desarrollador</label>
+        <select id="desarrollador" name="desarrollador">
+            {% for desarrollador in desarrolladores %}<option>{{ desarrollador }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="anio">Año de lanzamiento</label>
+        <input id="anio" name="anio" type="number" min="1970" max="2026" placeholder="2020" required>
+    </div>
+
+    <div>
+        <label for="estado">Estado del juego</label>
+        <select id="estado" name="estado">
+            {% for estado in estados %}<option>{{ estado }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="oferta">¿Cómo lo ofreces?</label>
+        <select id="oferta" name="oferta">
+            {% for oferta in ofertas %}<option>{{ oferta }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label for="precio">Precio (solo si es Venta)</label>
+        <input id="precio" name="precio" type="number" min="0" placeholder="0">
+    </div>
+
+    <div class="completo">
+        <label for="imagen">Link de la imagen de la portada (opcional)</label>
+        <input id="imagen" name="imagen" placeholder="https://... (clic derecho en una imagen → Copiar dirección de imagen)">
+    </div>
+
+    <div class="completo">
+        <button class="boton ancho" type="submit">Publicar videojuego</button>
+    </div>
+</form>
+{% endblock %}

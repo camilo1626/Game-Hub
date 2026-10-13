@@ -1,0 +1,40 @@
+<div class="tarjeta">
+    <!-- Portada: color e imagen según el tipo de juego (clase hija) -->
+    <div class="tapa {{ juego.tipo }}">
+        <span class="plataforma">{{ juego.plataforma }}</span>
+        {% if juego.imagen %}
+            <!-- Si el juego tiene portada, se muestra la imagen -->
+            <img class="portada-juego" src="{{ juego.imagen }}" alt="{{ juego.nombre }}">
+        {% else %}
+            <!-- Si no tiene, se muestra el ícono de su tipo -->
+            <img src="{{ url_for('static', filename='imagenes/' + juego.tipo + '.svg') }}" alt="{{ juego.tipo }}">
+            <small>{{ juego.tipo }}</small>
+        {% endif %}
+    </div>
+
+    <div class="datos">
+        <h3>{{ juego.nombre }}</h3>
+        <p class="gris">{{ juego.genero }} · {{ juego.año_lanzamiento }} · {{ juego.estado }}</p>
+        <p class="gris">Dueño: <b>{{ juego.dueno }}</b></p>
+
+        {% if juego.tipo_oferta == "Venta" %}
+            <p class="precio">$ {{ juego.obtener_precio() | pesos }}</p>
+        {% else %}
+            <span class="etiqueta {{ juego.tipo_oferta }}">{{ juego.tipo_oferta }}</span>
+        {% endif %}
+
+        <div class="pedir">
+            {% if not session["nombre"] %}
+                <a class="enlace" href="{{ url_for('iniciar_sesion') }}">Inicia sesión para pedirlo</a>
+            {% elif session["rol"] == "usuario" and juego.id_usuario != session["id_usuario"] %}
+                <form method="post" action="{{ url_for('pedir_juego', id_videojuego=juego.id_videojuego) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input name="mensaje" placeholder="Mensaje para el dueño" required>
+                    <button class="boton ancho" type="submit">🛒 Lo quiero</button>
+                </form>
+            {% elif juego.id_usuario == session["id_usuario"] %}
+                <span class="gris">Es tu juego</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
