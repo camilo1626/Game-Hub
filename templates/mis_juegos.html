@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Mis juegos</h1>
+<p class="subtitulo">Los videojuegos que tú publicaste</p>
+
+<div class="tabla-caja">
+    <table>
+        <thead>
+            <tr><th>Nombre</th><th>Clase</th><th>Oferta</th><th>Situación</th><th>Precio</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            {% for juego in juegos %}
+            <tr>
+                <td><b>{{ juego.nombre }}</b><br><small class="gris">{{ juego.plataforma }} · {{ juego.estado }}</small></td>
+                <td>{{ juego.tipo }}</td>
+                <td><span class="etiqueta {{ juego.tipo_oferta }}">{{ juego.tipo_oferta }}</span></td>
+                <td>{{ "Disponible" if juego.disponible else "Reservado" }}</td>
+                <td>$ {{ juego.obtener_precio() | pesos }}</td>
+                <td>
+                    <div class="acciones">
+                        {% if juego.tipo_oferta == "Venta" and juego.disponible %}
+                        <form method="post" action="{{ url_for('cambiar_precio', id_videojuego=juego.id_videojuego) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input name="precio" type="number" min="0" value="{{ juego.obtener_precio() | int }}" aria-label="Nuevo precio">
+                            <button class="boton chico" type="submit">Guardar</button>
+                        </form>
+                        {% endif %}
+                        <form method="post" action="{{ url_for('cambiar_imagen', id_videojuego=juego.id_videojuego) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input name="imagen" value="{{ juego.imagen }}" placeholder="Link de la portada" aria-label="Link de la portada">
+                            <button class="boton chico claro" type="submit">Portada</button>
+                        </form>
+                        <form method="post" action="{{ url_for('eliminar_juego', id_videojuego=juego.id_videojuego) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="boton chico rojo" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="vacio">Todavía no publicas juegos. <a href="{{ url_for('publicar') }}">Publica uno</a>.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

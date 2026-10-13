@@ -3,26 +3,49 @@
 <section class="portada">
     <div>
         <h1>Tus videojuegos merecen <span>una segunda vida</span></h1>
-        <p class="lema">GameHub es la plataforma de la comunidad gamer de Fusagasugá para vender, intercambiar o donar videojuegos físicos usados.</p>
+        <p class="lema">GameHub es la comunidad gamer de Fusagasugá para vender, intercambiar o donar videojuegos físicos usados.</p>
         <div class="botones">
             <a class="boton" href="{{ url_for('catalogo') }}">Ver catálogo</a>
-            <a class="boton claro" href="{{ url_for('registrar') }}">Registrar un juego</a>
+            {% if not session["nombre"] %}
+                <a class="boton claro" href="{{ url_for('crear_cuenta') }}">Crear cuenta gratis</a>
+            {% endif %}
         </div>
     </div>
-    <div class="cifra">
-        <b>{{ total }}</b>
-        <small>videojuegos registrados en SQL Server</small>
+    <div class="lado-portada">
+        <img class="imagen-portada" src="{{ url_for('static', filename='imagenes/control.svg') }}" alt="Control de videojuegos">
+        <div class="cifra">
+            <b>{{ total }}</b>
+            <small>juegos disponibles</small>
+        </div>
     </div>
 </section>
 
-<section class="ventajas">
-    <div class="ventaja"><span></span><b>Venta</b><small>a precio justo</small></div>
-    <div class="ventaja"><span></span><b>Intercambio</b><small>juego por juego</small></div>
-    <div class="ventaja"><span></span><b>Donación</b><small>para quien lo necesite</small></div>
+<h2 class="seccion">¿Cómo funciona?</h2>
+<section class="pasos">
+    <div class="paso"><b>1</b><h3>Crea tu cuenta</h3><p>Con tu nombre, correo y teléfono.</p></div>
+    <div class="paso"><b>2</b><h3>Publica un juego</h3><p>Para venderlo, cambiarlo o donarlo.</p></div>
+    <div class="paso"><b>3</b><h3>Pide un juego</h3><p>Al dueño le llega una notificación.</p></div>
+    <div class="paso"><b>4</b><h3>Recibe la respuesta</h3><p>Si acepta, te llega su teléfono.</p></div>
+</section>
+
+<h2 class="seccion">¿Quién hace qué?</h2>
+<section class="roles">
+    <div class="caja-rol">
+        <h3>Visitante</h3>
+        <p>Ve el inicio y el catálogo.</p>
+    </div>
+    <div class="caja-rol">
+        <h3>Usuario</h3>
+        <p>Publica juegos, pide juegos, acepta o rechaza pedidos y recibe notificaciones.</p>
+    </div>
+    <div class="caja-rol">
+        <h3>Administrador</h3>
+        <p>Ve todos los usuarios, juegos y solicitudes, y puede eliminar publicaciones.</p>
+    </div>
 </section>
 
 {% if recientes %}
-<h2 class="seccion">Recién registrados</h2>
+<h2 class="seccion">Recién publicados</h2>
 <div class="grilla">
     {% for juego in recientes %}
         {% include "_tarjeta.html" %}

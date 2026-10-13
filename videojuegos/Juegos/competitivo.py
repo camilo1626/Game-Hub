@@ -8,4 +8,4 @@ class JuegoCompetitivo(Videojuego):
         self.tipo = "JuegoCompetitivo"
 
     def jugar(self):
-        print(self.nombre, "es un juego competitivo.")
+        return self.nombre + " es un juego competitivo."

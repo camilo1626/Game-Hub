@@ -5,6 +5,7 @@
     <p class="subtitulo">Entra con tu correo y tu contraseña</p>
 
     <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="correo">Correo</label>
         <input id="correo" name="correo" type="email" placeholder="juan@gamehub.com" required>
 

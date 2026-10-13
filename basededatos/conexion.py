@@ -43,8 +43,10 @@ def ejecutar(sql, parametros=()):
     conexion = conectar()
     cursor = conexion.cursor()
     cursor.execute(sql, parametros)
+    filas_cambiadas = cursor.rowcount     # cuántas filas cambió el INSERT/UPDATE/DELETE
     conexion.commit()
     conexion.close()
+    return filas_cambiadas
 
 
 def obtener_opciones(tabla):
@@ -52,6 +54,22 @@ def obtener_opciones(tabla):
     for fila in consultar(OPCIONES[tabla]):
         nombres.append(fila[0])
     return nombres
+
+
+def base_actualizada():
+    # Revisa que las tablas tengan las columnas nuevas.
+    # Si alguna falta, la base es de una versión vieja.
+    try:
+        consultar("SELECT TOP 1 rol, telefono FROM Usuarios")
+        consultar("SELECT TOP 1 imagen, disponible FROM Videojuegos")
+        consultar("SELECT TOP 1 mensaje FROM Solicitudes")
+        consultar("SELECT TOP 1 leida FROM Notificaciones")
+        # La columna contrasena debe tener espacio para el hash (NVARCHAR(255) = 510 bytes)
+        if consultar("SELECT COL_LENGTH('Usuarios', 'contrasena')")[0][0] < 510:
+            return False
+        return True
+    except Exception:
+        return False
 
 
 if __name__ == "__main__":

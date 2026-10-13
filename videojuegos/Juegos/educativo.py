@@ -6,4 +6,4 @@ class JuegoEducativo(Videojuego):
         self.tipo = "JuegoEducativo"
 
     def jugar(self):
-        print(self.nombre, "es un juego educativo.")
+        return self.nombre + " es un juego educativo."

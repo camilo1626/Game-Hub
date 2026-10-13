@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Mis notificaciones</h1>
+<p class="subtitulo">Cada aviso te llega a ti solo. Márcalos como leídos uno por uno.</p>
+
+<div class="avisos">
+    {% for aviso in avisos %}
+        <div class="aviso {{ 'nuevo' if not aviso.leida }}">
+            <p>{{ aviso.mensaje }}</p>
+            {% if not aviso.leida %}
+                <form method="post" action="{{ url_for('marcar_leida', id_notificacion=aviso.id_notificacion) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="boton chico" type="submit">Marcar como leída</button>
+                </form>
+            {% else %}
+                <small class="gris">Leída</small>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="vacio">No tienes notificaciones.</p>
+    {% endfor %}
+</div>
+{% endblock %}

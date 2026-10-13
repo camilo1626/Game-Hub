@@ -5,11 +5,15 @@
     <p class="subtitulo">Únete a la comunidad gamer de Fusagasugá</p>
 
     <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="nombre">Nombre</label>
         <input id="nombre" name="nombre" placeholder="Ej: Juan García" required>
 
         <label for="correo">Correo</label>
         <input id="correo" name="correo" type="email" placeholder="juan@gamehub.com" required>
+
+        <label for="telefono">Teléfono (para que te contacten)</label>
+        <input id="telefono" name="telefono" type="tel" placeholder="3001234567" required>
 
         <label for="contrasena">Contraseña (mínimo 4 caracteres)</label>
         <input id="contrasena" name="contrasena" type="password" required>

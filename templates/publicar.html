@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block contenido %}
-<h1>Registrar un videojuego</h1>
-<p class="subtitulo">Los datos se guardan en la base de datos GameHub de SQL Server</p>
+<h1>Publicar un videojuego</h1>
+<p class="subtitulo">Llena los datos y tu juego aparecerá en el catálogo</p>
 
 <form class="formulario" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="completo">
         <label for="nombre">Nombre del juego</label>
         <input id="nombre" name="nombre" placeholder="Ej: GTA V" required>
@@ -39,12 +40,7 @@
 
     <div>
         <label for="anio">Año de lanzamiento</label>
-        <input id="anio" name="anio" type="number" placeholder="2020" required>
-    </div>
-
-    <div>
-        <label for="precio">Precio (0 si es intercambio o donación)</label>
-        <input id="precio" name="precio" type="number" placeholder="0">
+        <input id="anio" name="anio" type="number" min="1970" max="2026" placeholder="2020" required>
     </div>
 
     <div>
@@ -61,8 +57,18 @@
         </select>
     </div>
 
+    <div>
+        <label for="precio">Precio (solo si es Venta)</label>
+        <input id="precio" name="precio" type="number" min="0" placeholder="0">
+    </div>
+
     <div class="completo">
-        <button class="boton ancho" type="submit">Registrar videojuego</button>
+        <label for="imagen">Link de la imagen de la portada (opcional)</label>
+        <input id="imagen" name="imagen" placeholder="https://... (clic derecho en una imagen → Copiar dirección de imagen)">
+    </div>
+
+    <div class="completo">
+        <button class="boton ancho" type="submit">Publicar videojuego</button>
     </div>
 </form>
 {% endblock %}
